@@ -1,0 +1,41 @@
+{
+  "name": "@catatanhd/be",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Lapisan server CatatanHD: akses Supabase, validasi, dan aturan bisnis",
+  "exports": {
+    ".": "./src/index.ts",
+    "./supabase/server": "./src/supabase/server.ts",
+    "./supabase/admin": "./src/supabase/admin.ts",
+    "./supabase/proxy": "./src/supabase/proxy.ts",
+    "./auth/sesi": "./src/auth/sesi.ts",
+    "./auth/guard": "./src/auth/guard.ts",
+    "./schema/profil": "./src/schema/profil.ts",
+    "./schema/sesi": "./src/schema/sesi.ts",
+    "./schema/lab": "./src/schema/lab.ts",
+    "./schema/bantuan": "./src/schema/bantuan.ts",
+    "./services/pendaftaran": "./src/services/pendaftaran.ts",
+    "./services/sesi": "./src/services/sesi.ts",
+    "./services/lab": "./src/services/lab.ts",
+    "./services/histori": "./src/services/histori.ts",
+    "./services/profil": "./src/services/profil.ts",
+    "./services/pengguna": "./src/services/pengguna.ts",
+    "./services/retensi": "./src/services/retensi.ts",
+    "./services/email": "./src/services/email.ts",
+    "./util/durasi": "./src/util/durasi.ts",
+    "./util/tanggal": "./src/util/tanggal.ts",
+    "./util/env": "./src/util/env.ts",
+    "./types/database": "./src/types/database.ts"
+  },
+  "dependencies": {
+    "@supabase/ssr": "0.12.7",
+    "@supabase/supabase-js": "2.119.0",
+    "server-only": "0.0.1",
+    "zod": "4.6.7"
+  },
+  "peerDependencies": {
+    "next": ">=16",
+    "react": ">=19"
+  }
+}

@@ -1,0 +1,13 @@
+-- =============================================================================
+-- Seed data.
+--
+-- Akun super admin sengaja tidak dibuat lewat SQL karena tabel auth.users dan
+-- auth.identities berbeda antar versi Supabase. Gunakan perintah:
+--
+--   npm run admin:buat
+--
+-- Perintah tersebut memakai Admin API resmi sehingga aman terhadap perubahan
+-- internal GoTrue, lalu membuat profil dengan role super_admin.
+-- =============================================================================
+
+-- Tidak ada data awal. Database dimulai kosong.

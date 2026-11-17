@@ -1,0 +1,39 @@
+{
+  "name": "catatanhd",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Buku Catatan Pasien Hemodialisa",
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "workspaces": [
+    "fe",
+    "be"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace fe",
+    "build": "npm run build --workspace fe",
+    "start": "npm run start --workspace fe",
+    "lint": "eslint .",
+    "format": "prettier --check .",
+    "format:write": "prettier --write .",
+    "typecheck": "tsc -p be --noEmit && tsc -p fe --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:rls": "vitest run --config vitest.rls.config.ts",
+    "db:reset": "supabase db reset",
+    "db:push": "supabase db push",
+    "db:types": "supabase gen types typescript --local --schema public > be/src/types/database.ts",
+    "admin:buat": "node --env-file-if-exists=fe/.env.local be/src/scripts/buat-admin.ts"
+  },
+  "devDependencies": {
+    "@next/eslint-plugin-next": "16.4.6",
+    "@types/node": "^24.10.0",
+    "eslint": "^9.39.0",
+    "prettier": "3.10.1",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.73.0",
+    "vitest": "5.1.0"
+  }
+}

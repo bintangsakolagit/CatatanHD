@@ -1,0 +1,16 @@
+# Konfigurasi deploy Netlify.
+# Build dijalankan dari akar repo karena fe dan be adalah npm workspaces.
+[build]
+  command = "npm run build"
+  publish = "fe/.next"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Plugin resmi Next.js menangani SSR, route handler, dan image optimization.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Batas waktu fungsi. Job retensi memproses data per batch agar tidak melewati batas ini.
+[functions]
+  node_bundler = "esbuild"

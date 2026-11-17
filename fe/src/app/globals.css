@@ -1,0 +1,100 @@
+@import 'tailwindcss';
+
+/* Mode gelap dikendalikan kelas .dark pada <html>, disetel sebelum halaman tampil. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Token warna dipisah antara terang dan gelap.
+ * Komponen tidak pernah memakai hex langsung, hanya nama token, sehingga
+ * aturan "tombol primary hitam" tetap terjaga maknanya di kedua mode:
+ * kontras tinggi terhadap latar.
+ */
+@theme inline {
+  --font-sans: var(--font-open-sans), ui-sans-serif, system-ui, sans-serif;
+
+  --color-bg: var(--w-bg);
+  --color-surface: var(--w-surface);
+  --color-border: var(--w-border);
+  --color-text: var(--w-text);
+  --color-muted: var(--w-muted);
+  --color-primary: var(--w-primary);
+  --color-on-primary: var(--w-on-primary);
+  --color-danger: var(--w-danger);
+  --color-danger-soft: var(--w-danger-soft);
+  --color-ok: var(--w-ok);
+  --color-ok-soft: var(--w-ok-soft);
+
+  --radius-card: 20px;
+  --radius-kontrol: 14px;
+}
+
+:root {
+  --w-bg: #f4f4f1;
+  --w-surface: #ffffff;
+  --w-border: #111111;
+  --w-text: #101010;
+  --w-muted: #5f5f5a;
+  --w-primary: #111111;
+  --w-on-primary: #ffffff;
+  --w-danger: #b42318;
+  --w-danger-soft: #fdeceb;
+  --w-ok: #1a7f37;
+  --w-ok-soft: #e8f5ec;
+}
+
+.dark {
+  --w-bg: #0a0a0a;
+  --w-surface: #151515;
+  --w-border: #eaeaea;
+  --w-text: #f5f5f3;
+  --w-muted: #a3a39d;
+  --w-primary: #f5f5f3;
+  --w-on-primary: #0a0a0a;
+  --w-danger: #ff9b90;
+  --w-danger-soft: #2a1210;
+  --w-ok: #7ee2a8;
+  --w-ok-soft: #10251a;
+}
+
+@layer base {
+  body {
+    background-color: var(--w-bg);
+    color: var(--w-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Fokus keyboard harus selalu terlihat, termasuk di atas tombol hitam. */
+  :focus-visible {
+    outline: 2px solid var(--w-text);
+    outline-offset: 2px;
+  }
+
+  /* Angka sejajar kolom agar tabel berat dan tensi mudah dibaca. */
+  .angka {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+
+  input[type='date'],
+  input[type='time'] {
+    min-height: 2.75rem;
+  }
+}
+
+/* Halaman histori bisa dicetak sebagai pengganti PDF tanpa pustaka tambahan. */
+@media print {
+  .tanpa-cetak {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff;
+    color: #000000;
+  }
+
+  .kartu-cetak {
+    border-color: #000000 !important;
+    break-inside: avoid;
+  }
+}

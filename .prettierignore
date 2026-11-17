@@ -1,0 +1,7 @@
+node_modules/
+.next/
+.netlify/
+coverage/
+fe/.next/
+fe/next-env.d.ts
+package-lock.json
