@@ -12,7 +12,7 @@ export function FormMasuk({ lanjut }: { lanjut?: string }) {
   const [status, aksi, sedang] = useActionState<StatusForm, FormData>(aksiMasuk, STATUS_AWAL)
 
   return (
-    <form action={aksi} className="space-y-4" noValidate>
+    <form key={status.kunci ?? 0} action={aksi} className="space-y-4" noValidate>
       {status.galat?.umum ? <Peringatan jenis="galat">{status.galat.umum}</Peringatan> : null}
 
       {lanjut ? <input type="hidden" name="lanjut" value={lanjut} /> : null}
@@ -25,6 +25,7 @@ export function FormMasuk({ lanjut }: { lanjut?: string }) {
           autoComplete="email"
           inputMode="email"
           placeholder="nama@email.com"
+          defaultValue={status.nilai?.email ?? ''}
           required
         />
       </Kolom>

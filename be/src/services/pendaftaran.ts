@@ -54,6 +54,14 @@ export async function daftarPasien(masukan: unknown): Promise<Hasil<{ perluVerif
     if (galatDaftar.code === 'over_email_send_rate_limit') {
       return gagal({ umum: 'Terlalu banyak percobaan. Tunggu beberapa menit lalu coba lagi.' })
     }
+    // Supabase membatalkan pendaftaran bila email verifikasi tidak terkirim,
+    // misalnya karena SMTP belum benar. Pesannya dibuat jelas agar admin tahu
+    // yang perlu diperbaiki bukan data pendaftar.
+    if (galatDaftar.message.toLowerCase().includes('confirmation email')) {
+      return gagal({
+        umum: 'Email verifikasi gagal dikirim. Coba lagi beberapa saat atau hubungi admin.',
+      })
+    }
     return gagal({ umum: 'Pendaftaran gagal. Coba lagi beberapa saat.' })
   }
 

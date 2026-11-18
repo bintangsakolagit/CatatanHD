@@ -16,8 +16,11 @@ import type { StatusForm } from './tipe'
  */
 export async function aksiMasuk(_status: StatusForm, data: FormData): Promise<StatusForm> {
   const mentah = bacaForm(data)
+  const email = mentah.email ?? ''
+  // Email dikembalikan agar pengguna tidak mengetik ulang setelah gagal masuk.
+  const ulangEmail = { nilai: { email }, kunci: Date.now() }
   const uji = skemaMasuk.safeParse(mentah)
-  if (!uji.success) return { galat: uraiGalatZod(uji.error) }
+  if (!uji.success) return { galat: uraiGalatZod(uji.error), ...ulangEmail }
 
   const supabase = await buatKlienServer()
   const { data: hasil, error } = await supabase.auth.signInWithPassword({
@@ -26,7 +29,7 @@ export async function aksiMasuk(_status: StatusForm, data: FormData): Promise<St
   })
 
   if (error || !hasil.user) {
-    return { galat: { umum: 'Email atau password salah.' } }
+    return { galat: { umum: 'Email atau password salah.' }, ...ulangEmail }
   }
 
   const { data: profil } = await supabase
@@ -38,7 +41,10 @@ export async function aksiMasuk(_status: StatusForm, data: FormData): Promise<St
   // Akun yang dinonaktifkan admin tidak boleh tetap punya sesi aktif.
   if (!profil || !profil.is_active) {
     await supabase.auth.signOut()
-    return { galat: { umum: 'Akun ini tidak aktif. Hubungi admin untuk membukanya kembali.' } }
+    return {
+      galat: { umum: 'Akun ini tidak aktif. Hubungi admin untuk membukanya kembali.' },
+      ...ulangEmail,
+    }
   }
 
   await catatLogin()
@@ -57,14 +63,29 @@ export async function aksiMasuk(_status: StatusForm, data: FormData): Promise<St
 /** Pendaftaran pasien baru. Akun harus diverifikasi lewat email sebelum bisa masuk. */
 export async function aksiDaftar(_status: StatusForm, data: FormData): Promise<StatusForm> {
   const mentah = bacaForm(data)
-  const muatan = {
+  const muatan: Record<string, string> = {
     ...mentah,
     username: (mentah.username ?? '').trim().toLowerCase(),
     email: (mentah.email ?? '').trim().toLowerCase(),
   }
 
   const hasil = await daftarPasien(muatan)
-  if (!hasil.ok) return { galat: hasil.galat }
+  if (!hasil.ok) {
+    // Password tidak pernah dikirim balik ke browser. Kolom lain dikembalikan
+    // agar pengguna tidak perlu mengetik ulang seluruh formulir.
+    return {
+      galat: hasil.galat,
+      nilai: {
+        nama: muatan.nama ?? '',
+        email: muatan.email ?? '',
+        username: muatan.username ?? '',
+        tanggal_lahir: muatan.tanggal_lahir ?? '',
+        bb_kering_kg: muatan.bb_kering_kg ?? '',
+        alamat: muatan.alamat ?? '',
+      },
+      kunci: Date.now(),
+    }
+  }
 
   return {
     sukses: true,

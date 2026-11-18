@@ -3,6 +3,20 @@
 Format mengikuti [Keep a Changelog](https://keepachangelog.com/id/1.1.0/) dan
 [Semantic Versioning](https://semver.org/lang/id/).
 
+## [1.0.2] - 2026-11-18
+
+Perbaikan pengalaman formulir saat pendaftaran atau masuk gagal.
+
+### Diperbaiki
+
+- Isian formulir pendaftaran (nama, email, username, tanggal lahir, berat badan kering,
+  alamat) dan email pada formulir masuk dikembalikan saat aksi gagal, sehingga pengguna
+  tidak perlu mengetik ulang. Password sengaja tidak pernah dikirim balik ke browser.
+- Formulir dimuat ulang dengan `key` dari server setiap kali aksi gagal, karena React
+  mengosongkan formulir otomatis setelah Server Action selesai.
+- Pesan pendaftaran kini membedakan kegagalan pengiriman email verifikasi dari kegagalan
+  data, agar admin tahu bagian mana yang perlu diperbaiki.
+
 ## [1.0.1] - 2026-11-18
 
 Perbaikan izin tabel yang membuat akun super admin gagal dibuat di project produksi.

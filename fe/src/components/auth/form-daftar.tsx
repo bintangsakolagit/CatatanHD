@@ -34,7 +34,7 @@ export function FormDaftar() {
   }
 
   return (
-    <form action={aksi} className="space-y-4" noValidate>
+    <form key={status.kunci ?? 0} action={aksi} className="space-y-4" noValidate>
       {status.galat?.umum ? <Peringatan jenis="galat">{status.galat.umum}</Peringatan> : null}
 
       <Kolom label="Nama lengkap" htmlFor="nama" galat={status.galat?.nama}>
@@ -43,6 +43,7 @@ export function FormDaftar() {
           name="nama"
           autoComplete="name"
           placeholder="Nama sesuai identitas"
+          defaultValue={status.nilai?.nama ?? ''}
           required
         />
       </Kolom>
@@ -56,6 +57,7 @@ export function FormDaftar() {
             autoComplete="email"
             inputMode="email"
             placeholder="nama@email.com"
+            defaultValue={status.nilai?.email ?? ''}
             required
           />
         </Kolom>
@@ -71,6 +73,7 @@ export function FormDaftar() {
             name="username"
             autoComplete="username"
             placeholder="nama.pasien"
+            defaultValue={status.nilai?.username ?? ''}
             required
           />
         </Kolom>
@@ -105,7 +108,14 @@ export function FormDaftar() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <Kolom label="Tanggal lahir" htmlFor="tanggal_lahir" galat={status.galat?.tanggal_lahir}>
-          <Input id="tanggal_lahir" name="tanggal_lahir" type="date" max={hariIni} required />
+          <Input
+            id="tanggal_lahir"
+            name="tanggal_lahir"
+            type="date"
+            max={hariIni}
+            defaultValue={status.nilai?.tanggal_lahir ?? ''}
+            required
+          />
         </Kolom>
 
         <Kolom
@@ -123,6 +133,7 @@ export function FormDaftar() {
             min="20"
             max="250"
             placeholder="60.5"
+            defaultValue={status.nilai?.bb_kering_kg ?? ''}
             required
           />
         </Kolom>
@@ -134,6 +145,7 @@ export function FormDaftar() {
           name="alamat"
           autoComplete="street-address"
           placeholder="Alamat tinggal"
+          defaultValue={status.nilai?.alamat ?? ''}
           required
         />
       </Kolom>
