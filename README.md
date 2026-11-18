@@ -243,6 +243,9 @@ sesi dan mengarahkan pengguna yang belum masuk; pemeriksaan role tetap dilakukan
 
 - **`Variabel lingkungan ... belum diisi`** — pastikan `fe/.env.local` ada dan diisi, lalu
   mulai ulang `npm run dev`.
+- **`permission denied for table profiles`** — migrasi izin tabel belum diterapkan.
+  Jalankan `npm run db:push`, lalu ulangi `npm run admin:buat`. Project Supabase baru
+  tidak lagi memberi izin tabel otomatis pada skema `public`.
 - **Pendaftaran berhasil tetapi email tidak masuk** — periksa `RESEND_API_KEY`,
   `EMAIL_PENGIRIM`, dan folder spam. Di lokal, buka antarmuka email pada
   <http://localhost:54324>.

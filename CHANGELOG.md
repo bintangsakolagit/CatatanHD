@@ -3,6 +3,21 @@
 Format mengikuti [Keep a Changelog](https://keepachangelog.com/id/1.1.0/) dan
 [Semantic Versioning](https://semver.org/lang/id/).
 
+## [1.0.1] - 2026-11-18
+
+Perbaikan izin tabel yang membuat akun super admin gagal dibuat di project produksi.
+
+### Diperbaiki
+
+- Migrasi `0004_izin.sql` memberi `GRANT` tabel kepada role `authenticated` dan
+  `service_role`. Project Supabase baru tidak lagi memberi izin otomatis pada skema
+  `public`, sehingga `npm run admin:buat` berhenti dengan pesan
+  `permission denied for table profiles` walaupun RLS sudah benar.
+- Izin `update` pada tabel `profiles` tetap dibatasi per kolom agar pasien tidak dapat
+  mengubah `role`, `email`, `is_active`, atau `last_login_at`.
+- `anon` tetap tanpa hak tabel apa pun; RLS tetap menjadi lapisan kedua setelah izin
+  tabel.
+
 ## [1.0.0] - 2026-11-18
 
 Rilis pertama CatatanHD: buku catatan pasien hemodialisa dengan pemisahan frontend dan
