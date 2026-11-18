@@ -148,20 +148,20 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 ## Skrip
 
-| Perintah             | Kegunaan                                             |
-| -------------------- | ---------------------------------------------------- |
-| `npm run dev`        | Menjalankan Next.js dalam mode pengembangan.         |
-| `npm run build`      | Build produksi.                                      |
-| `npm run start`      | Menjalankan hasil build.                             |
-| `npm run typecheck`  | Memeriksa tipe `be` dan `fe`.                        |
-| `npm run lint`       | ESLint untuk seluruh repo.                           |
-| `npm run format`     | Memeriksa format Prettier.                           |
-| `npm run test`       | Uji unit Vitest.                                     |
-| `npm run test:rls`   | Uji RLS (butuh Supabase lokal menyala).              |
-| `npm run db:reset`   | Mengulang migrasi dan seed Supabase lokal.           |
-| `npm run db:push`    | Menerapkan migrasi ke project Supabase yang tertaut. |
-| `npm run db:types`   | Membuat ulang tipe database dari Supabase lokal.     |
-| `npm run admin:buat` | Membuat atau memperbarui akun super admin.           |
+| Perintah             | Kegunaan                                            |
+| -------------------- | --------------------------------------------------- |
+| `npm run dev`        | Menjalankan Next.js dalam mode pengembangan.        |
+| `npm run build`      | Build produksi.                                     |
+| `npm run start`      | Menjalankan hasil build.                            |
+| `npm run typecheck`  | Memeriksa tipe `be` dan `fe`.                       |
+| `npm run lint`       | ESLint untuk seluruh repo.                          |
+| `npm run format`     | Memeriksa format Prettier.                          |
+| `npm run test`       | Uji unit Vitest.                                    |
+| `npm run test:rls`   | Uji RLS (butuh Supabase lokal menyala).             |
+| `npm run db:reset`   | Mengulang migrasi dan seed Supabase lokal.          |
+| `npm run db:push`    | Menerapkan migrasi ke project tertaut (`--remote`). |
+| `npm run db:types`   | Membuat ulang tipe database dari Supabase lokal.    |
+| `npm run admin:buat` | Membuat atau memperbarui akun super admin.          |
 
 Selalu jalankan `typecheck`, `lint`, dan `test` sebelum commit. Build juga perlu dicek
 setelah mengubah halaman atau konfigurasi.
@@ -210,6 +210,17 @@ curl -X POST http://localhost:3000/api/cron/retensi \
 
 ## Deploy ke Netlify
 
+Sebelum deploy pertama, terapkan skema ke project produksi:
+
+```bash
+npx supabase link --project-ref <project-ref-anda>
+npm run db:push
+```
+
+Sejak Supabase CLI 3.x, `supabase db push` tanpa opsi menargetkan stack lokal. Karena itu
+skrip repo memakai `db push --remote`. Untuk memeriksa tanpa mengubah apa pun, jalankan
+`npx supabase db push --dry-run --remote`.
+
 1. Hubungkan repo ke Netlify. Saat Netlify mendeteksi monorepo, pilih folder `fe` sebagai
    **package directory**. Biarkan **base directory** di akar repo.
 2. Build command `npm run build`, publish directory `fe/.next` sudah diatur di
@@ -233,7 +244,8 @@ sesi dan mengarahkan pengguna yang belum masuk; pemeriksaan role tetap dilakukan
 - **`Variabel lingkungan ... belum diisi`** — pastikan `fe/.env.local` ada dan diisi, lalu
   mulai ulang `npm run dev`.
 - **Pendaftaran berhasil tetapi email tidak masuk** — periksa `RESEND_API_KEY`,
-  `EMAIL_PENGIRIM`, dan folder spam. Di lokal, buka Inbucket.
+  `EMAIL_PENGIRIM`, dan folder spam. Di lokal, buka antarmuka email pada
+  <http://localhost:54324>.
 - **Tautan verifikasi mengarah ke localhost** — samakan `NEXT_PUBLIC_SITE_URL` dengan
   domain produksi dan perbarui Redirect URLs di Supabase.
 - **Admin tidak bisa membuka `/pengguna`** — pastikan profil akun tersebut memiliki

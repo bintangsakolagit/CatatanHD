@@ -15,7 +15,9 @@ major_version = 17
 enabled = true
 port = 54323
 
-[inbucket]
+# Server email lokal. Email tidak benar-benar dikirim, tetapi bisa dibaca
+# lewat antarmuka web pada port 54324.
+[local_smtp]
 enabled = true
 port = 54324
 
@@ -25,9 +27,11 @@ site_url = "http://localhost:3000"
 additional_redirect_urls = ["http://localhost:3000/auth/konfirmasi"]
 jwt_expiry = 3600
 enable_signup = true
-enable_confirmations = false
+minimum_password_length = 8
 
+# Konfirmasi email dimatikan hanya untuk pengembangan lokal agar tidak perlu
+# membuka kotak masuk. Di produksi, aktifkan lewat dashboard Supabase.
 [auth.email]
-enable_signup = true
+enabled = true
 double_confirm_changes = false
 enable_confirmations = false

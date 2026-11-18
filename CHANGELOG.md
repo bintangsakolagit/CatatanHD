@@ -41,3 +41,7 @@ backend, keamanan berbasis RLS, dan retensi data otomatis.
   layout dan Server Action.
 - Durasi disimpan dalam menit, tanggal lahir disimpan sebagai tanggal dan umurnya
   dihitung saat ditampilkan.
+- `supabase/config.toml` mengikuti format Supabase CLI 3.x: server email lokal memakai
+  bagian `[local_smtp]`, bukan `[inbucket]` yang sudah dihapus.
+- Skrip `db:push` memakai `--remote` karena CLI 3.x menjadikan stack lokal sebagai target
+  bawaan untuk `supabase db push`.

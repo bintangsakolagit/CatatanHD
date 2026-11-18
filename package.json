@@ -23,7 +23,7 @@
     "test:watch": "vitest",
     "test:rls": "node --env-file-if-exists=fe/.env.local node_modules/vitest/vitest.mjs run --config vitest.rls.config.ts",
     "db:reset": "supabase db reset",
-    "db:push": "supabase db push",
+    "db:push": "supabase db push --remote",
     "db:types": "supabase gen types typescript --local --schema public > be/src/types/database.ts",
     "admin:buat": "node --env-file-if-exists=fe/.env.local be/src/scripts/buat-admin.ts"
   },
