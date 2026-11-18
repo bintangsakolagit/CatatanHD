@@ -29,6 +29,8 @@ backend, keamanan berbasis RLS, dan retensi data otomatis.
   `ringkasan_histori`, serta `cari_akun_pasif`.
 - Skrip `npm run admin:buat` untuk membuat akun super admin lewat Admin API.
 - Uji unit untuk validasi tanggal, durasi, profil, sesi, dan laboratorium.
+- Uji RLS untuk memastikan pasien tidak dapat membaca atau mengubah data pasien lain,
+  tidak dapat menaikkan role sendiri, dan fungsi retensi hanya terbuka untuk service role.
 - Fungsi Netlify terjadwal untuk menjalankan retensi harian di produksi.
 
 ### Catatan teknis

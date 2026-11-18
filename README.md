@@ -134,6 +134,8 @@ saat deploy.
 | `ADMIN_EMAIL`                   |  ya   | Dipakai `npm run admin:buat`.                                   |
 | `ADMIN_PASSWORD`                |  ya   | Minimal 8 karakter.                                             |
 | `ADMIN_WHATSAPP`                |  ya   | Nomor tujuan di halaman lupa password.                          |
+| `ADMIN_NAMA`                    | tidak | Nama tampilan super admin. Bawaan `Super Admin`.                |
+| `ADMIN_USERNAME`                | tidak | Username super admin. Bawaan `admin`.                           |
 | `APP_TZ`                        | tidak | Zona waktu perhitungan tanggal. Bawaan `Asia/Jakarta`.          |
 | `CRON_SECRET`                   |  ya   | Rahasia pemanggil endpoint retensi.                             |
 | `NEXT_PUBLIC_SITE_URL`          |  ya   | Alamat publik aplikasi untuk tautan email dan reset.            |
@@ -163,6 +165,12 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 Selalu jalankan `typecheck`, `lint`, dan `test` sebelum commit. Build juga perlu dicek
 setelah mengubah halaman atau konfigurasi.
+
+Uji RLS membutuhkan Supabase lokal yang menyala dan otomatis dilewati bila kredensial
+belum tersedia. Perintah `npm run test:rls` memuat `fe/.env.local`, lalu membuat dua akun
+uji sementara dan memeriksa bahwa keduanya tidak bisa saling melihat data. Akun uji dihapus
+kembali di akhir. Untuk memakai project uji terpisah, isi `SUPABASE_TEST_URL`,
+`SUPABASE_TEST_ANON_KEY`, dan `SUPABASE_TEST_SERVICE_ROLE_KEY`.
 
 ## Keamanan data
 

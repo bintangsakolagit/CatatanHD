@@ -21,7 +21,7 @@
     "typecheck": "tsc -p be --noEmit && tsc -p fe --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:rls": "vitest run --config vitest.rls.config.ts",
+    "test:rls": "node --env-file-if-exists=fe/.env.local node_modules/vitest/vitest.mjs run --config vitest.rls.config.ts",
     "db:reset": "supabase db reset",
     "db:push": "supabase db push",
     "db:types": "supabase gen types typescript --local --schema public > be/src/types/database.ts",
