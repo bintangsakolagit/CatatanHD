@@ -6,6 +6,9 @@ node_modules/
 out/
 next-env.d.ts
 
+# Berkas panduan agen yang dibuat ulang otomatis oleh `next dev`
+fe/AGENTS.md
+
 # Netlify
 .netlify/
 

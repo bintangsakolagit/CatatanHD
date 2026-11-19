@@ -101,3 +101,12 @@ Aplikasi berbasis web untuk Buku Catatan Pasien hemodialisa.
 ## perbaikan 1
 
 - pasien belum bisa daftar pada form daftar pada aplikasi yang sudah di deploy ke netlify dan supabase
+
+## perbaikan 2
+
+- pendaftaran di situs produksi sudah berhasil diuji lewat browser: pendaftar langsung masuk ke
+  beranda, dan isian formulir tetap ada ketika email sudah terdaftar.
+- penyebab pendaftaran gagal sebelumnya adalah email konfirmasi tidak terkirim karena domain
+  pengirim belum terverifikasi di Resend. Konfirmasi email dimatikan sementara sampai domain siap.
+- halaman produksi menampilkan `Minified React error #418` di konsol. Ini bug upstream React pada
+  streaming hydration (react#37321), bukan perbedaan data aplikasi. Hidrasi tetap berhasil.

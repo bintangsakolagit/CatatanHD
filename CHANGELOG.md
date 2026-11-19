@@ -3,6 +3,23 @@
 Format mengikuti [Keep a Changelog](https://keepachangelog.com/id/1.1.0/) dan
 [Semantic Versioning](https://semver.org/lang/id/).
 
+## [1.0.4] - 2026-11-19
+
+Catatan hasil verifikasi langsung pada situs produksi.
+
+### Diperbaiki
+
+- `.gitignore` kini mengabaikan `fe/AGENTS.md` yang dibuat ulang otomatis oleh `next dev`,
+  agar status Git tidak terus kotor setelah menjalankan server pengembangan.
+
+### Catatan
+
+- Pendaftaran pasien pada situs produksi sudah diuji lewat browser: pendaftar langsung masuk ke
+  beranda, dan isian formulir tetap tersedia saat email sudah terdaftar.
+- Halaman produksi menampilkan `Minified React error #418` di konsol. Penyebabnya bug upstream
+  React pada streaming hydration (<https://github.com/facebook/react/issues/37321>), bukan
+  perbedaan data aplikasi. Hidrasi tetap berhasil dan seluruh fitur berjalan.
+
 ## [1.0.3] - 2026-11-18
 
 Pendaftaran dapat dipakai sebelum domain pengirim email terverifikasi.

@@ -1,6 +1,6 @@
 {
   "name": "@catatanhd/be",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": true,
   "type": "module",
   "description": "Lapisan server CatatanHD: akses Supabase, validasi, dan aturan bisnis",
