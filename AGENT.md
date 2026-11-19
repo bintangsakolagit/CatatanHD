@@ -97,3 +97,7 @@ Aplikasi berbasis web untuk Buku Catatan Pasien hemodialisa.
 - Jangan pakai UX Writing atau bahasa AI slop
 - Pokoknya anti AI slop, baik UX Writing maupun UI
 - Jangan expose database keluar
+
+## perbaikan 1
+
+- pasien belum bisa daftar pada form daftar pada aplikasi yang sudah di deploy ke netlify dan supabase
