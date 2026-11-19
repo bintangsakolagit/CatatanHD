@@ -5,6 +5,7 @@ import { tanggalJakarta } from '@catatanhd/be/util/tanggal'
 import { FormHb } from '@/components/lab/form-hb'
 import { FormUreumKreatinin } from '@/components/lab/form-ureum-kreatinin'
 import { TombolHapusLab } from '@/components/lab/tombol-hapus-lab'
+import { Ikon } from '@/components/ui/ikon'
 import { Kartu, JudulBagian, Statistik } from '@/components/ui/kartu'
 import { Lencana } from '@/components/ui/lencana'
 import { formatNilaiLab, formatTanggal } from '@/lib/format'
@@ -31,7 +32,8 @@ export default async function HalamanLab() {
   return (
     <div className="space-y-5">
       <div className="space-y-1">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">
+        <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-primary">
+          <Ikon nama="lab" className="h-3.5 w-3.5" tebal={2.2} />
           Pemeriksaan penunjang
         </p>
         <h1 className="text-2xl font-extrabold tracking-tight">Hasil laboratorium</h1>
@@ -64,6 +66,8 @@ export default async function HalamanLab() {
               nilai={nilai ? formatNilaiLab(nilai.nilai) : '—'}
               satuan={nilai ? SATUAN[jenis] : undefined}
               keterangan={nilai ? formatTanggal(nilai.tanggal) : 'Belum ada data'}
+              nada={jenis === 'hb' ? 'utama' : jenis === 'ureum' ? 'amber' : 'lila'}
+              ikon="lab"
             />
           )
         })}
@@ -82,6 +86,7 @@ export default async function HalamanLab() {
         <JudulBagian
           label="Riwayat"
           judul="Pemeriksaan terakhir"
+          ikon="histori"
           keterangan={
             data.daftar.length === 0
               ? 'Belum ada pemeriksaan yang dicatat.'

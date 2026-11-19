@@ -7,6 +7,8 @@ import { FormProfil } from '@/components/profil/form-profil'
 import { Kartu, JudulBagian } from '@/components/ui/kartu'
 import { Lencana } from '@/components/ui/lencana'
 import { Peringatan } from '@/components/ui/peringatan'
+import { Ikon } from '@/components/ui/ikon'
+import { gayaTombol } from '@/components/ui/tombol'
 import { formatTanggal, formatWaktu } from '@/lib/format'
 
 export const metadata: Metadata = { title: 'Profil' }
@@ -31,23 +33,30 @@ export default async function HalamanProfil() {
   return (
     <div className="space-y-5">
       <div className="space-y-1">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">Akun</p>
+        <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-primary">
+          <Ikon nama="profil" className="h-3.5 w-3.5" tebal={2.2} />
+          Akun
+        </p>
         <h1 className="text-2xl font-extrabold tracking-tight">Profil dan pengaturan</h1>
       </div>
 
       <Kartu className="p-5">
-        <JudulBagian
-          label="Data akun"
-          judul={profil.nama}
-          aksi={
-            <Lencana nada="ok">{profil.role === 'super_admin' ? 'Super admin' : 'Pasien'}</Lencana>
-          }
-        />
-        <dl className="mt-4 grid gap-4 text-sm sm:grid-cols-2">
-          <div>
-            <dt className="text-muted">Email</dt>
-            <dd className="mt-0.5 font-semibold">{profil.email}</dd>
+        <div className="flex items-center gap-3">
+          <span className="gradien-tetes flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-lg font-extrabold text-white shadow-lembut">
+            {profil.nama.charAt(0).toUpperCase()}
+          </span>
+          <div className="min-w-0">
+            <p className="truncate text-lg font-bold">{profil.nama}</p>
+            <p className="text-sm text-muted">{profil.email}</p>
           </div>
+          <div className="ml-auto">
+            <Lencana nada={profil.role === 'super_admin' ? 'lila' : 'utama'}>
+              {profil.role === 'super_admin' ? 'Super admin' : 'Pasien'}
+            </Lencana>
+          </div>
+        </div>
+
+        <dl className="mt-5 grid gap-4 border-t border-border/40 pt-4 text-sm sm:grid-cols-2">
           <div>
             <dt className="text-muted">Umur</dt>
             <dd className="mt-0.5 font-semibold">{hitungUmur(profil.tanggal_lahir)} tahun</dd>
@@ -62,6 +71,10 @@ export default async function HalamanProfil() {
               {formatTanggal(profil.created_at.slice(0, 10))}
             </dd>
           </div>
+          <div>
+            <dt className="text-muted">Berat badan kering</dt>
+            <dd className="angka mt-0.5 font-semibold">{profil.bb_kering_kg} kg</dd>
+          </div>
         </dl>
       </Kartu>
 
@@ -74,7 +87,7 @@ export default async function HalamanProfil() {
       ) : null}
 
       <Kartu className="p-5">
-        <JudulBagian label="Data pasien" judul="Ubah profil" />
+        <JudulBagian label="Data pasien" judul="Ubah profil" ikon="profil" />
         <div className="mt-4">
           <FormProfil
             profil={{
@@ -89,7 +102,7 @@ export default async function HalamanProfil() {
       </Kartu>
 
       <Kartu className="p-5">
-        <JudulBagian label="Keamanan" judul="Ganti password" />
+        <JudulBagian label="Keamanan" judul="Ganti password" ikon="kunci" />
         <div className="mt-4">
           <FormPassword />
         </div>
@@ -101,10 +114,8 @@ export default async function HalamanProfil() {
           <p className="text-sm text-muted">Anda perlu masuk kembali untuk membuka catatan.</p>
         </div>
         <form action={aksiKeluar}>
-          <button
-            type="submit"
-            className="inline-flex h-11 items-center rounded-kontrol border border-border px-4 text-sm font-semibold"
-          >
+          <button type="submit" className={gayaTombol('sekunder', 'sm')}>
+            <Ikon nama="keluar" className="h-4 w-4" />
             Keluar
           </button>
         </form>

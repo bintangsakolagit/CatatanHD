@@ -5,6 +5,7 @@ import { useActionState } from 'react'
 import { aksiSimpanHb } from '@/actions/lab'
 import { STATUS_AWAL, type StatusForm } from '@/actions/tipe'
 import { Input, Kolom } from '@/components/ui/kolom'
+import { Ikon } from '@/components/ui/ikon'
 import { Peringatan } from '@/components/ui/peringatan'
 import { Tombol } from '@/components/ui/tombol'
 
@@ -20,9 +21,14 @@ export function FormHb({ tanggalHariIni }: { tanggalHariIni: string }) {
 
   return (
     <form ref={formulir} action={aksi} className="space-y-4" noValidate>
-      <div>
-        <h3 className="font-bold">Hemoglobin (HB)</h3>
-        <p className="text-xs text-muted">Diperiksa sebulan sekali. Satuan g/dL.</p>
+      <div className="flex items-start gap-3">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-kontrol bg-primary-soft text-primary-kuat">
+          <Ikon nama="tetes" />
+        </span>
+        <div>
+          <h3 className="font-bold">Hemoglobin (HB)</h3>
+          <p className="text-xs text-muted">Diperiksa sebulan sekali. Satuan g/dL.</p>
+        </div>
       </div>
 
       {status.pesan ? (

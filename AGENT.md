@@ -57,9 +57,11 @@ Aplikasi berbasis web untuk Buku Catatan Pasien hemodialisa.
 - Bentuk component squircle
 - Fitur Dark/Light mode
 - Warna:
-  - Tombol primary hitam
-  - Tombol secondary putih
-  - Card putih dengan border hitam
+  - Tombol primary memakai gradien teal dengan teks putih
+  - Tombol secondary putih dengan border lembut
+  - Card putih kehijauan dengan border lembut dan bayangan tipis
+  - Amber, cyan, dan lila dipakai sebagai aksen pembeda jenis data
+- Hindari permukaan abu-abu datar; gunakan latar lembut berwarna dan ikon garis
 - Responsive untuk tampilan mobile dan tablet
 - Font OpenSans
 
@@ -110,3 +112,24 @@ Aplikasi berbasis web untuk Buku Catatan Pasien hemodialisa.
   pengirim belum terverifikasi di Resend. Konfirmasi email dimatikan sementara sampai domain siap.
 - halaman produksi menampilkan `Minified React error #418` di konsol. Ini bug upstream React pada
   streaming hydration (react#37321), bukan perbedaan data aplikasi. Hidrasi tetap berhasil.
+
+## perbaikan 3
+
+- tampilan diubah semenarik mungkin tidak abu dan hitam sebih berwarna dan moderen mengacu pada user friendly
+- untuk pengisian form bisakan di kelompokan antara data sebelum cuci darah dan data pengisian berkala ketika cuci darah dan di akhir sesi cuci darah
+- form dan alur pengisian di buat mudah dan sederhana karena pengguna kebanyakan orang tua mengacu pada user friendly
+
+### Hasil implementasi perbaikan 3
+
+- Palet baru: teal sebagai warna tindakan utama, amber untuk penanda, cyan dan lila untuk
+  membedakan jenis data. Permukaan putih kehijauan, border lembut, dan bayangan tipis
+  menggantikan tampilan abu-abu dengan garis hitam.
+- Navigasi dan tombol memakai ikon garis bawaan (`components/ui/ikon.tsx`) tanpa menambah
+  pustaka, dengan target sentuh lebih besar agar nyaman bagi pengguna lanjut usia.
+- Formulir sesi dibagi menjadi tiga langkah: Sebelum, Selama, dan Setelah cuci darah.
+  Perpindahan langkah memakai tombol Lanjut dan Kembali; seluruh bagian tetap terpasang di
+  DOM sehingga isian tidak hilang saat berpindah langkah.
+- Validasi tahap berjalan di browser lewat `lib/tahap-sesi.ts`, sedangkan validasi lengkap
+  tetap dijalankan server. Galat server otomatis membuka langkah yang bermasalah.
+- Halaman detail sesi disusun ulang mengikuti urutan sebelum, selama, dan setelah agar sama
+  dengan alur pengisian.

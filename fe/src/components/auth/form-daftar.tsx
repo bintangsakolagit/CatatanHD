@@ -6,7 +6,7 @@ import { aksiDaftar } from '@/actions/autentikasi'
 import { STATUS_AWAL, type StatusForm } from '@/actions/tipe'
 import { Input, Kolom } from '@/components/ui/kolom'
 import { Peringatan } from '@/components/ui/peringatan'
-import { Tombol } from '@/components/ui/tombol'
+import { Tombol, gayaTombol } from '@/components/ui/tombol'
 import { tanggalJakarta } from '@catatanhd/be/util/tanggal'
 
 export function FormDaftar() {
@@ -23,10 +23,7 @@ export function FormDaftar() {
           Email verifikasi dikirim oleh layanan CatatanHD. Bila tidak terlihat dalam beberapa menit,
           periksa folder spam atau hubungi admin.
         </p>
-        <Link
-          href="/masuk"
-          className="inline-flex h-11 w-full items-center justify-center rounded-kontrol border border-primary bg-primary px-4 text-sm font-semibold text-on-primary"
-        >
+        <Link href="/masuk" className={gayaTombol('utama', 'md', 'w-full')}>
           Ke halaman masuk
         </Link>
       </div>
@@ -156,7 +153,10 @@ export function FormDaftar() {
 
       <p className="text-sm text-muted">
         Sudah punya akun?{' '}
-        <Link href="/masuk" className="font-semibold text-text underline underline-offset-4">
+        <Link
+          href="/masuk"
+          className="font-semibold text-primary-kuat underline underline-offset-4"
+        >
           Masuk
         </Link>
       </p>

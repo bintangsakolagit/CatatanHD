@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { Ikon } from './ikon'
 
 /**
  * Tombol tema. Status awal dibaca dari kelas pada <html> yang sudah disetel
@@ -29,11 +30,9 @@ export function TombolTema({ ringkas = false }: { ringkas?: boolean }) {
       type="button"
       onClick={ubahTema}
       aria-label={gelap ? 'Gunakan mode terang' : 'Gunakan mode gelap'}
-      className="inline-flex h-10 items-center gap-2 rounded-kontrol border border-border bg-surface px-3 text-sm font-semibold transition hover:bg-black/[0.04] dark:hover:bg-white/[0.08]"
+      className="inline-flex h-10 items-center gap-2 rounded-full border border-border bg-surface px-3 text-sm font-semibold text-muted transition hover:border-primary/40 hover:text-primary-kuat"
     >
-      <span aria-hidden="true" className="text-base leading-none">
-        {gelap ? '☀' : '☾'}
-      </span>
+      <Ikon nama={gelap ? 'matahari' : 'bulan'} className="h-4.5 w-4.5" />
       {ringkas ? null : <span>{gelap ? 'Terang' : 'Gelap'}</span>}
     </button>
   )

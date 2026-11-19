@@ -4,69 +4,111 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
- * Token warna dipisah antara terang dan gelap.
- * Komponen tidak pernah memakai hex langsung, hanya nama token, sehingga
- * aturan "tombol primary hitam" tetap terjaga maknanya di kedua mode:
- * kontras tinggi terhadap latar.
+ * Token warna dipusatkan di sini agar seluruh halaman memakai bahasa warna yang
+ * sama. Paletnya dibuat lebih hangat dan berwarna: teal untuk tindakan utama,
+ * amber untuk penanda, dan permukaan putih kehijauan agar tidak terasa kaku.
  */
 @theme inline {
   --font-sans: var(--font-open-sans), ui-sans-serif, system-ui, sans-serif;
 
   --color-bg: var(--w-bg);
   --color-surface: var(--w-surface);
+  --color-surface-2: var(--w-surface-2);
   --color-border: var(--w-border);
   --color-text: var(--w-text);
   --color-muted: var(--w-muted);
   --color-primary: var(--w-primary);
+  --color-primary-kuat: var(--w-primary-kuat);
+  --color-primary-soft: var(--w-primary-soft);
   --color-on-primary: var(--w-on-primary);
+  --color-accent: var(--w-accent);
+  --color-accent-soft: var(--w-accent-soft);
+  --color-info: var(--w-info);
+  --color-info-soft: var(--w-info-soft);
+  --color-lila: var(--w-lila);
+  --color-lila-soft: var(--w-lila-soft);
   --color-danger: var(--w-danger);
   --color-danger-soft: var(--w-danger-soft);
   --color-ok: var(--w-ok);
   --color-ok-soft: var(--w-ok-soft);
 
-  --radius-card: 20px;
-  --radius-kontrol: 14px;
+  --radius-card: 24px;
+  --radius-kontrol: 16px;
+
+  --shadow-lembut: 0 1px 2px rgb(15 32 27 / 0.04), 0 14px 34px -22px rgb(15 32 27 / 0.38);
 }
 
 :root {
-  --w-bg: #f4f4f1;
+  --w-bg: #f2f7f4;
   --w-surface: #ffffff;
-  --w-border: #111111;
-  --w-text: #101010;
-  --w-muted: #5f5f5a;
-  --w-primary: #111111;
+  --w-surface-2: #edf5f1;
+  --w-border: #d5e4de;
+  --w-text: #10221c;
+  --w-muted: #5a6f68;
+  --w-primary: #0f766e;
+  --w-primary-kuat: #0b5f58;
+  --w-primary-soft: #d9f2ec;
   --w-on-primary: #ffffff;
+  --w-accent: #a85b06;
+  --w-accent-soft: #fdf0d9;
+  --w-info: #0e7490;
+  --w-info-soft: #ddf3f9;
+  --w-lila: #6d28d9;
+  --w-lila-soft: #efe9fd;
   --w-danger: #b42318;
   --w-danger-soft: #fdeceb;
-  --w-ok: #1a7f37;
-  --w-ok-soft: #e8f5ec;
+  --w-ok: #15803d;
+  --w-ok-soft: #e6f6ec;
+  --w-glow-1: rgb(15 118 110 / 0.1);
+  --w-glow-2: rgb(245 158 11 / 0.1);
 }
 
 .dark {
-  --w-bg: #0a0a0a;
-  --w-surface: #151515;
-  --w-border: #eaeaea;
-  --w-text: #f5f5f3;
-  --w-muted: #a3a39d;
-  --w-primary: #f5f5f3;
-  --w-on-primary: #0a0a0a;
-  --w-danger: #ff9b90;
-  --w-danger-soft: #2a1210;
-  --w-ok: #7ee2a8;
-  --w-ok-soft: #10251a;
+  --w-bg: #07120f;
+  --w-surface: #0f1d19;
+  --w-surface-2: #142a24;
+  --w-border: #27443c;
+  --w-text: #eef7f3;
+  --w-muted: #a3b8b1;
+  --w-primary: #2dd4bf;
+  --w-primary-kuat: #5eead4;
+  --w-primary-soft: #10322c;
+  --w-on-primary: #04211c;
+  --w-accent: #fbbf24;
+  --w-accent-soft: #3a2a0d;
+  --w-info: #7dd3fc;
+  --w-info-soft: #0b2733;
+  --w-lila: #c4b5fd;
+  --w-lila-soft: #241a3d;
+  --w-danger: #fda29b;
+  --w-danger-soft: #3a1411;
+  --w-ok: #6ee7b7;
+  --w-ok-soft: #0d2a1d;
+  --w-glow-1: rgb(45 212 191 / 0.12);
+  --w-glow-2: rgb(251 191 36 / 0.07);
 }
 
 @layer base {
   body {
     background-color: var(--w-bg);
+    /* Dua cahaya lembut di latar membuat halaman tidak terasa datar. */
+    background-image:
+      radial-gradient(58rem 38rem at 4% -8%, var(--w-glow-1), transparent 62%),
+      radial-gradient(46rem 32rem at 98% 2%, var(--w-glow-2), transparent 58%);
+    background-attachment: fixed;
     color: var(--w-text);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Fokus keyboard harus selalu terlihat, termasuk di atas tombol hitam. */
+  ::selection {
+    background-color: var(--w-primary-soft);
+    color: var(--w-primary-kuat);
+  }
+
+  /* Fokus keyboard harus selalu terlihat, termasuk di atas bidang berwarna. */
   :focus-visible {
-    outline: 2px solid var(--w-text);
+    outline: 2px solid var(--w-primary);
     outline-offset: 2px;
   }
 
@@ -78,8 +120,17 @@
 
   input[type='date'],
   input[type='time'] {
-    min-height: 2.75rem;
+    min-height: 3rem;
   }
+}
+
+/* Gradien merek dipakai pada kepala halaman dan tombol utama. */
+.gradien-utama {
+  background-image: linear-gradient(135deg, #0b5f58 0%, #0f766e 48%, #14b8a6 100%);
+}
+
+.gradien-tetes {
+  background-image: linear-gradient(150deg, #0f766e 0%, #0d9488 55%, #f59e0b 140%);
 }
 
 /* Halaman histori bisa dicetak sebagai pengganti PDF tanpa pustaka tambahan. */

@@ -5,6 +5,7 @@ import { useActionState } from 'react'
 import { aksiSimpanUreumKreatinin } from '@/actions/lab'
 import { STATUS_AWAL, type StatusForm } from '@/actions/tipe'
 import { Input, Kolom } from '@/components/ui/kolom'
+import { Ikon } from '@/components/ui/ikon'
 import { Peringatan } from '@/components/ui/peringatan'
 import { Tombol } from '@/components/ui/tombol'
 
@@ -22,9 +23,14 @@ export function FormUreumKreatinin({ tanggalHariIni }: { tanggalHariIni: string 
 
   return (
     <form ref={formulir} action={aksi} className="space-y-4" noValidate>
-      <div>
-        <h3 className="font-bold">Ureum dan kreatinin</h3>
-        <p className="text-xs text-muted">Diperiksa setahun sekali. Satuan mg/dL.</p>
+      <div className="flex items-start gap-3">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-kontrol bg-accent-soft text-accent">
+          <Ikon nama="lab" />
+        </span>
+        <div>
+          <h3 className="font-bold">Ureum dan kreatinin</h3>
+          <p className="text-xs text-muted">Diperiksa setahun sekali. Satuan mg/dL.</p>
+        </div>
       </div>
 
       {status.pesan ? (

@@ -5,6 +5,7 @@ import { ambilRingkasanBeranda } from '@catatanhd/be/services/histori'
 import { ambilLab } from '@catatanhd/be/services/lab'
 import { formatDurasi } from '@catatanhd/be/util/durasi'
 import { tanggalJakarta } from '@catatanhd/be/util/tanggal'
+import { Ikon } from '@/components/ui/ikon'
 import { Kartu, JudulBagian, Statistik } from '@/components/ui/kartu'
 import { Lencana } from '@/components/ui/lencana'
 import { gayaTombol } from '@/components/ui/tombol'
@@ -41,41 +42,61 @@ export default async function HalamanBeranda() {
 
   const sesiTerakhir = ringkasan.sesiTerakhir
   const turun = sesiTerakhir ? selisihBerat(sesiTerakhir.bb_pra_kg, sesiTerakhir.bb_pasca_kg) : null
+  const namaDepan = sesi.profil.nama.split(' ')[0] ?? sesi.profil.nama
 
   return (
     <div className="space-y-6">
-      <div className="space-y-1">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">
-          {formatTanggalPanjang(tanggalJakarta())}
-        </p>
-        <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
-          {sapaan()}, {sesi.profil.nama.split(' ')[0]}
-        </h1>
-      </div>
+      <section className="gradien-utama relative overflow-hidden rounded-card p-5 text-white shadow-lembut sm:p-7">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-10 -top-16 h-48 w-48 rounded-full bg-white/10"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -bottom-24 right-16 h-40 w-40 rounded-full bg-white/10"
+        />
 
-      {!ringkasan.sudahCatatHariIni ? (
-        <Kartu className="flex flex-wrap items-center justify-between gap-4 p-5">
-          <div className="space-y-1">
-            <p className="text-sm font-semibold">Sesi hari ini belum dicatat</p>
-            <p className="text-sm text-muted">
-              Catat berat badan dan tensi sebelum pulang dari unit.
-            </p>
+        <div className="relative">
+          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-white/75">
+            {formatTanggalPanjang(tanggalJakarta())}
+          </p>
+          <h1 className="mt-1 text-2xl font-extrabold tracking-tight sm:text-3xl">
+            {sapaan()}, {namaDepan}
+          </h1>
+          <p className="mt-1.5 max-w-md text-sm leading-relaxed text-white/85">
+            {ringkasan.sudahCatatHariIni
+              ? 'Sesi hari ini sudah tercatat. Anda masih bisa memperbaiki datanya kapan saja.'
+              : 'Catat berat badan dan tensi sesi hari ini supaya riwayat tetap lengkap.'}
+          </p>
+
+          <div className="mt-5 flex flex-wrap items-center gap-2">
+            <Link
+              href="/catatan/baru"
+              className="inline-flex h-11 items-center gap-2 rounded-full bg-white px-5 text-sm font-bold text-primary-kuat shadow-lembut transition hover:bg-white/90"
+            >
+              <Ikon nama="tambah" className="h-4 w-4" tebal={2.4} />
+              {ringkasan.sudahCatatHariIni ? 'Catat sesi lain' : 'Catat sesi hari ini'}
+            </Link>
+            <Link
+              href="/histori"
+              className="inline-flex h-11 items-center gap-2 rounded-full border border-white/35 px-4 text-sm font-semibold text-white transition hover:bg-white/10"
+            >
+              <Ikon nama="histori" className="h-4 w-4" />
+              Lihat histori
+            </Link>
           </div>
-          <Link href="/catatan/baru" className={gayaTombol('utama')}>
-            Catat sesi
-          </Link>
-        </Kartu>
-      ) : (
-        <Kartu className="flex flex-wrap items-center justify-between gap-4 p-5">
-          <div className="space-y-1">
-            <p className="text-sm font-semibold">Sesi hari ini sudah tercatat</p>
-            <p className="text-sm text-muted">Anda masih bisa memperbaiki datanya.</p>
+
+          <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-black/15 px-3 py-1.5 text-xs font-semibold">
+            <span
+              className={`h-2 w-2 rounded-full ${ringkasan.sudahCatatHariIni ? 'bg-accent' : 'bg-white'}`}
+              aria-hidden="true"
+            />
+            {ringkasan.sudahCatatHariIni
+              ? 'Sesi hari ini sudah dicatat'
+              : 'Sesi hari ini belum dicatat'}
           </div>
-          <Link href="/catatan/baru" className={gayaTombol('sekunder', 'sm')}>
-            Catat sesi lain
-          </Link>
-        </Kartu>
-      )}
+        </div>
+      </section>
 
       <div className="grid gap-3 sm:grid-cols-3">
         <Statistik
@@ -83,6 +104,8 @@ export default async function HalamanBeranda() {
           nilai={ringkasan.totalBulanIni}
           satuan="sesi"
           keterangan="Sejak awal bulan"
+          nada="utama"
+          ikon="kalender"
         />
         <Statistik
           label="Rata-rata turun BB"
@@ -93,12 +116,16 @@ export default async function HalamanBeranda() {
           }
           satuan="kg"
           keterangan="Selisih sebelum dan sesudah"
+          nada="amber"
+          ikon="timbangan"
         />
         <Statistik
           label="Berat badan kering"
           nilai={formatAngka(sesi.profil.bb_kering_kg, 1)}
           satuan="kg"
           keterangan="Data profil"
+          nada="info"
+          ikon="tetes"
         />
       </div>
 
@@ -107,23 +134,26 @@ export default async function HalamanBeranda() {
           <JudulBagian
             label="Sesi terakhir"
             judul={sesiTerakhir ? formatTanggal(sesiTerakhir.tanggal) : 'Belum ada catatan'}
+            ikon="kalender"
             aksi={
-              sesiTerakhir ? <Lencana>{formatDurasi(sesiTerakhir.durasi_menit)}</Lencana> : null
+              sesiTerakhir ? (
+                <Lencana nada="utama">{formatDurasi(sesiTerakhir.durasi_menit)}</Lencana>
+              ) : null
             }
           />
 
           {sesiTerakhir ? (
             <>
-              <dl className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <dt className="text-muted">Berat sebelum</dt>
-                  <dd className="angka mt-0.5 text-lg font-bold">
+              <dl className="grid grid-cols-2 gap-3 text-sm">
+                <div className="rounded-kontrol border border-primary/15 bg-primary-soft/70 p-3">
+                  <dt className="text-xs font-semibold text-primary-kuat/75">Berat sebelum</dt>
+                  <dd className="angka mt-0.5 text-lg font-bold text-primary-kuat">
                     {formatBerat(sesiTerakhir.bb_pra_kg)}
                   </dd>
                 </div>
-                <div>
-                  <dt className="text-muted">Berat sesudah</dt>
-                  <dd className="angka mt-0.5 text-lg font-bold">
+                <div className="rounded-kontrol border border-ok/20 bg-ok-soft/70 p-3">
+                  <dt className="text-xs font-semibold text-ok/80">Berat sesudah</dt>
+                  <dd className="angka mt-0.5 text-lg font-bold text-ok">
                     {formatBerat(sesiTerakhir.bb_pasca_kg)}
                   </dd>
                 </div>
@@ -146,7 +176,7 @@ export default async function HalamanBeranda() {
                 </div>
               </dl>
 
-              <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border/20 pt-3 text-sm">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border/40 pt-3 text-sm">
                 <span className="text-muted">
                   {turun === null
                     ? 'Berat sesudah belum diisi.'
@@ -154,14 +184,15 @@ export default async function HalamanBeranda() {
                 </span>
                 <Link
                   href={`/catatan/${sesiTerakhir.id}`}
-                  className="font-semibold underline underline-offset-4"
+                  className="inline-flex items-center gap-1 font-semibold text-primary-kuat hover:underline"
                 >
                   Lihat detail
+                  <Ikon nama="lanjut" className="h-3.5 w-3.5" />
                 </Link>
               </div>
 
               {sesiTerakhir.keluhan ? (
-                <p className="rounded-kontrol bg-black/[0.03] px-3 py-2 text-sm dark:bg-white/[0.05]">
+                <p className="rounded-kontrol bg-accent-soft px-3 py-2 text-sm text-accent">
                   <span className="font-semibold">Keluhan: </span>
                   {sesiTerakhir.keluhan}
                 </p>
@@ -178,6 +209,7 @@ export default async function HalamanBeranda() {
           <JudulBagian
             label="Laboratorium"
             judul="Nilai terbaru"
+            ikon="lab"
             aksi={
               <Link href="/lab" className={gayaTombol('sekunder', 'sm')}>
                 Kelola
@@ -185,7 +217,7 @@ export default async function HalamanBeranda() {
             }
           />
 
-          <ul className="divide-y divide-border/20 text-sm">
+          <ul className="divide-y divide-border/40 text-sm">
             {(['hb', 'ureum', 'kreatinin'] as const).map((jenis) => {
               const nilai = lab.terbaru[jenis]
               const label = jenis === 'hb' ? 'HB' : jenis === 'ureum' ? 'Ureum' : 'Kreatinin'
@@ -214,7 +246,9 @@ export default async function HalamanBeranda() {
                       <p className="text-[11px] font-semibold text-danger">
                         {jenis === 'hb' ? 'Belum bulan ini' : 'Belum tahun ini'}
                       </p>
-                    ) : null}
+                    ) : (
+                      <p className="text-[11px] font-semibold text-ok">Sudah diperiksa</p>
+                    )}
                   </div>
                 </li>
               )

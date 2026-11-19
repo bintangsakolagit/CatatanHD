@@ -7,7 +7,7 @@ export default function HalamanDaftar() {
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">
+        <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-primary">
           Akun pasien
         </p>
         <h1 className="text-2xl font-extrabold tracking-tight">Buat akun CatatanHD</h1>

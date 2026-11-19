@@ -3,6 +3,32 @@
 Format mengikuti [Keep a Changelog](https://keepachangelog.com/id/1.1.0/) dan
 [Semantic Versioning](https://semver.org/lang/id/).
 
+## [1.1.0] - 2026-11-19
+
+Tampilan lebih berwarna dan formulir sesi tiga langkah yang lebih mudah dipakai.
+
+### Diubah
+
+- Palet warna baru: teal untuk tindakan utama, amber untuk penanda, serta cyan dan lila
+  untuk membedakan jenis data. Latar putih kehijauan, border lembut, dan bayangan tipis
+  menggantikan tampilan abu-abu dengan garis hitam.
+- Navigasi atas dan bawah memakai ikon garis, tombol lebih besar, dan penanda langkah yang
+  jelas agar nyaman dipakai pengguna lanjut usia.
+- Halaman beranda memakai panel sambutan bergradien, kartu statistik berwarna, dan ringkasan
+  sesi terakhir yang lebih mudah dipindai.
+- Histori, laboratorium, profil, dan detail sesi memakai bahasa visual yang sama: lencana
+  berwarna, kartu bertint, serta judul bagian berikon.
+- Halaman masuk, daftar, dan lupa password dibungkus satu kartu dengan garis gradien di atas.
+
+### Ditambahkan
+
+- Formulir sesi tiga langkah: Sebelum, Selama, dan Setelah cuci darah. Seluruh bagian tetap
+  terpasang sehingga isian tidak hilang saat berpindah langkah.
+- Validasi per langkah di browser melalui `lib/tahap-sesi.ts`; galat dari server otomatis
+  membuka langkah yang bermasalah.
+- Tombol tambah pemeriksaan tensi berkala dengan kartu baris yang lebih lega.
+- Uji unit untuk aturan tiap langkah dan pemetaan galat server ke langkah formulir.
+
 ## [1.0.4] - 2026-11-19
 
 Catatan hasil verifikasi langsung pada situs produksi.

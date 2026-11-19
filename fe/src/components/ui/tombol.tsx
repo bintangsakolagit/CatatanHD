@@ -4,16 +4,17 @@ type Varian = 'utama' | 'sekunder' | 'halus' | 'bahaya'
 type Ukuran = 'md' | 'sm'
 
 const gayaVarian: Record<Varian, string> = {
-  utama: 'border-primary bg-primary text-on-primary hover:opacity-85',
-  sekunder: 'border-border bg-surface text-text hover:bg-black/[0.04] dark:hover:bg-white/[0.08]',
-  halus:
-    'border-transparent bg-transparent text-text hover:bg-black/[0.04] dark:hover:bg-white/[0.08]',
-  bahaya: 'border-danger bg-transparent text-danger hover:bg-danger/10',
+  utama:
+    'gradien-utama border-transparent text-on-primary shadow-lembut hover:brightness-110 active:brightness-95',
+  sekunder:
+    'border-border bg-surface text-text hover:border-primary/45 hover:bg-primary-soft hover:text-primary-kuat',
+  halus: 'border-transparent bg-transparent text-muted hover:bg-surface-2 hover:text-text',
+  bahaya: 'border-danger/30 bg-danger-soft text-danger hover:border-danger hover:bg-danger/15',
 }
 
 const gayaUkuran: Record<Ukuran, string> = {
-  md: 'h-11 px-4 text-sm',
-  sm: 'h-9 px-3 text-sm',
+  md: 'h-12 px-5 text-sm',
+  sm: 'h-10 px-3.5 text-sm',
 }
 
 /** Kelas tombol dipakai bersama oleh <button> dan <Link> agar tampil identik. */

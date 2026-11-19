@@ -4,6 +4,7 @@ import { wajibLogin } from '@catatanhd/be/auth/sesi'
 import { ambilHistori, normalisasiParameter } from '@catatanhd/be/services/histori'
 import { formatDurasi } from '@catatanhd/be/util/durasi'
 import { geserBulan, tanggalJakarta } from '@catatanhd/be/util/tanggal'
+import { Ikon } from '@/components/ui/ikon'
 import { Kartu, JudulBagian, Statistik } from '@/components/ui/kartu'
 import { Lencana } from '@/components/ui/lencana'
 import { Tombol } from '@/components/ui/tombol'
@@ -12,6 +13,9 @@ import { gayaTombol } from '@/components/ui/tombol'
 import { formatAngka, formatBerat, formatTanggal, formatTensi, selisihBerat } from '@/lib/format'
 
 export const metadata: Metadata = { title: 'Histori' }
+
+const gayaTanggal =
+  'h-11 rounded-kontrol border border-border bg-surface px-3.5 text-sm text-text transition focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15'
 
 export default async function HalamanHistori({
   searchParams,
@@ -39,7 +43,8 @@ export default async function HalamanHistori({
     <div className="space-y-5">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div className="space-y-1">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">
+          <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-primary">
+            <Ikon nama="histori" className="h-3.5 w-3.5" tebal={2.2} />
             Rangkuman
           </p>
           <h1 className="text-2xl font-extrabold tracking-tight">Histori cuci darah</h1>
@@ -50,9 +55,11 @@ export default async function HalamanHistori({
         <div className="tanpa-cetak flex flex-wrap gap-2">
           <TombolCetak />
           <a href={tautanEkspor} className={gayaTombol('sekunder', 'sm')}>
+            <Ikon nama="unduh" className="h-4 w-4" />
             Unduh CSV
           </a>
           <Link href="/catatan/baru" className={gayaTombol('utama', 'sm')}>
+            <Ikon nama="tambah" className="h-4 w-4" />
             Catat sesi
           </Link>
         </div>
@@ -61,7 +68,7 @@ export default async function HalamanHistori({
       <Kartu className="tanpa-cetak space-y-4 p-5">
         <form method="get" action="/histori" className="flex flex-wrap items-end gap-3">
           <div className="space-y-1.5">
-            <label htmlFor="dari" className="block text-sm font-semibold">
+            <label htmlFor="dari" className="block text-[13px] font-semibold">
               Dari
             </label>
             <input
@@ -70,11 +77,11 @@ export default async function HalamanHistori({
               type="date"
               defaultValue={parameter.dari}
               max={hariIni}
-              className="h-11 rounded-kontrol border border-border bg-surface px-3.5 text-sm"
+              className={gayaTanggal}
             />
           </div>
           <div className="space-y-1.5">
-            <label htmlFor="sampai" className="block text-sm font-semibold">
+            <label htmlFor="sampai" className="block text-[13px] font-semibold">
               Sampai
             </label>
             <input
@@ -83,7 +90,7 @@ export default async function HalamanHistori({
               type="date"
               defaultValue={parameter.sampai}
               max={hariIni}
-              className="h-11 rounded-kontrol border border-border bg-surface px-3.5 text-sm"
+              className={gayaTanggal}
             />
           </div>
           <Tombol type="submit" ukuran="sm">
@@ -100,8 +107,8 @@ export default async function HalamanHistori({
                 href={`/histori?dari=${pilihan.dari}&sampai=${hariIni}`}
                 className={
                   menyala
-                    ? 'rounded-full border border-primary bg-primary px-3 py-1 text-xs font-semibold text-on-primary'
-                    : 'rounded-full border border-border px-3 py-1 text-xs font-semibold text-muted'
+                    ? 'rounded-full border border-primary/40 bg-primary-soft px-3.5 py-1.5 text-xs font-bold text-primary-kuat'
+                    : 'rounded-full border border-border bg-surface px-3.5 py-1.5 text-xs font-semibold text-muted transition hover:border-primary/40 hover:text-primary-kuat'
                 }
               >
                 {pilihan.label}
@@ -112,7 +119,13 @@ export default async function HalamanHistori({
       </Kartu>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <Statistik label="Jumlah sesi" nilai={data.ringkasan.totalSesi} satuan="sesi" />
+        <Statistik
+          label="Jumlah sesi"
+          nilai={data.ringkasan.totalSesi}
+          satuan="sesi"
+          nada="utama"
+          ikon="kalender"
+        />
         <Statistik
           label="Rata-rata turun BB"
           nilai={
@@ -121,6 +134,8 @@ export default async function HalamanHistori({
               : formatAngka(Math.abs(data.ringkasan.rataTurunBb), 1)
           }
           satuan="kg"
+          nada="amber"
+          ikon="timbangan"
         />
         <Statistik
           label="Rata-rata tensi"
@@ -136,6 +151,8 @@ export default async function HalamanHistori({
           }
           satuan="mmHg"
           keterangan="Tensi sebelum cuci darah"
+          nada="info"
+          ikon="jantung"
         />
         <Statistik
           label="Durasi tersering"
@@ -144,12 +161,16 @@ export default async function HalamanHistori({
               ? '—'
               : formatDurasi(data.ringkasan.durasiTersering)
           }
+          nada="lila"
+          ikon="jam"
         />
       </div>
 
       <div className="space-y-3">
         <JudulBagian
-          judul="Daftar sesi"
+          label="Daftar"
+          judul="Sesi tercatat"
+          ikon="catatan"
           keterangan={
             data.total === 0
               ? undefined
@@ -158,8 +179,11 @@ export default async function HalamanHistori({
         />
 
         {data.daftar.length === 0 ? (
-          <Kartu className="space-y-2 p-6 text-center">
-            <p className="text-sm font-semibold">Belum ada catatan di rentang ini.</p>
+          <Kartu className="space-y-2 p-8 text-center">
+            <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary-soft text-primary-kuat">
+              <Ikon nama="kalender" className="h-6 w-6" />
+            </span>
+            <p className="pt-1 text-sm font-semibold">Belum ada catatan di rentang ini.</p>
             <p className="text-sm text-muted">
               Ubah rentang tanggal atau catat sesi baru untuk mulai mengisi histori.
             </p>
@@ -175,13 +199,19 @@ export default async function HalamanHistori({
                 <li key={item.id}>
                   <Kartu className="p-4" cetak>
                     <div className="flex flex-wrap items-start justify-between gap-3">
-                      <div className="space-y-1">
-                        <p className="font-bold">{formatTanggal(item.tanggal)}</p>
-                        <p className="text-xs text-muted">
-                          {formatDurasi(item.durasi_menit)} · Tensi{' '}
-                          {formatTensi(item.tensi_pra_sistolik, item.tensi_pra_diastolik)} →{' '}
-                          {formatTensi(item.tensi_pasca_sistolik, item.tensi_pasca_diastolik)} mmHg
-                        </p>
+                      <div className="flex min-w-0 items-start gap-3">
+                        <span className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-kontrol bg-primary-soft text-primary-kuat sm:flex">
+                          <Ikon nama="kalender" className="h-5 w-5" />
+                        </span>
+                        <div className="min-w-0 space-y-1">
+                          <p className="font-bold">{formatTanggal(item.tanggal)}</p>
+                          <p className="text-xs text-muted">
+                            {formatDurasi(item.durasi_menit)} · Tensi{' '}
+                            {formatTensi(item.tensi_pra_sistolik, item.tensi_pra_diastolik)} →{' '}
+                            {formatTensi(item.tensi_pasca_sistolik, item.tensi_pasca_diastolik)}{' '}
+                            mmHg
+                          </p>
+                        </div>
                       </div>
                       <div className="flex items-center gap-3">
                         <div className="text-right">
@@ -195,21 +225,26 @@ export default async function HalamanHistori({
                           </p>
                         </div>
                         {item.tensi_pasca_sistolik === null ? (
-                          <Lencana nada="bahaya">Belum selesai</Lencana>
-                        ) : null}
+                          <Lencana nada="amber">Belum selesai</Lencana>
+                        ) : (
+                          <Lencana nada="ok">Lengkap</Lencana>
+                        )}
                       </div>
                     </div>
 
                     {item.keluhan ? (
-                      <p className="mt-3 line-clamp-2 text-sm text-muted">{item.keluhan}</p>
+                      <p className="mt-3 line-clamp-2 rounded-kontrol bg-accent-soft/70 px-3 py-2 text-sm text-accent">
+                        {item.keluhan}
+                      </p>
                     ) : null}
 
                     <div className="tanpa-cetak mt-3 flex justify-end">
                       <Link
                         href={`/catatan/${item.id}`}
-                        className="text-sm font-semibold underline underline-offset-4"
+                        className="inline-flex items-center gap-1 text-sm font-semibold text-primary-kuat hover:underline"
                       >
                         Lihat detail
+                        <Ikon nama="lanjut" className="h-3.5 w-3.5" />
                       </Link>
                     </div>
                   </Kartu>
@@ -224,7 +259,7 @@ export default async function HalamanHistori({
             {parameter.halaman > 1 ? (
               <Link
                 href={buatTautan(parameter.halaman - 1)}
-                className="font-semibold underline underline-offset-4"
+                className="font-semibold text-primary-kuat underline underline-offset-4"
               >
                 Sebelumnya
               </Link>
@@ -237,7 +272,7 @@ export default async function HalamanHistori({
             {parameter.halaman < totalHalaman ? (
               <Link
                 href={buatTautan(parameter.halaman + 1)}
-                className="font-semibold underline underline-offset-4"
+                className="font-semibold text-primary-kuat underline underline-offset-4"
               >
                 Berikutnya
               </Link>

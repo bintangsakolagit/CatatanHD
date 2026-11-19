@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { wajibLogin } from '@catatanhd/be/auth/sesi'
 import { ambilSesi } from '@catatanhd/be/services/sesi'
 import { formatDurasi } from '@catatanhd/be/util/durasi'
+import { Ikon } from '@/components/ui/ikon'
 import { Kartu, JudulBagian, Statistik } from '@/components/ui/kartu'
 import { Lencana } from '@/components/ui/lencana'
 import { TombolHapusSesi } from '@/components/sesi/tombol-hapus-sesi'
@@ -20,7 +21,10 @@ import {
 
 export const metadata: Metadata = { title: 'Detail sesi' }
 
-/** Detail satu sesi: semua angka dan catatan dalam satu halaman yang bisa dicetak. */
+/**
+ * Detail satu sesi disusun mengikuti urutan kejadian: sebelum, selama, lalu
+ * setelah cuci darah. Urutan ini sama dengan formulir agar mudah dicocokkan.
+ */
 export default async function HalamanDetailSesi({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const sesi = await wajibLogin()
@@ -32,11 +36,12 @@ export default async function HalamanDetailSesi({ params }: { params: Promise<{ 
 
   return (
     <div className="mx-auto max-w-3xl space-y-5">
-      <div className="tanpa-cetak space-y-2">
+      <div className="tanpa-cetak space-y-3">
         <Link
           href="/histori"
-          className="text-sm font-semibold text-muted underline underline-offset-4"
+          className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted transition hover:text-primary-kuat"
         >
+          <Ikon nama="kembali" className="h-4 w-4" />
           Kembali ke histori
         </Link>
         <div className="flex flex-wrap items-start justify-between gap-3">
@@ -44,8 +49,8 @@ export default async function HalamanDetailSesi({ params }: { params: Promise<{ 
             <h1 className="text-2xl font-extrabold tracking-tight">
               {formatTanggalPanjang(data.tanggal)}
             </h1>
-            <p className="mt-1 flex items-center gap-2 text-sm text-muted">
-              <Lencana>{formatDurasi(data.durasi_menit)}</Lencana>
+            <p className="mt-1 flex flex-wrap items-center gap-2 text-sm text-muted">
+              <Lencana nada="utama">{formatDurasi(data.durasi_menit)}</Lencana>
               <span>Dicatat {formatTanggal(data.tanggal)}</span>
             </p>
           </div>
@@ -58,53 +63,74 @@ export default async function HalamanDetailSesi({ params }: { params: Promise<{ 
         </div>
       </div>
 
-      <Kartu className="p-5" cetak>
-        <JudulBagian label="Ringkasan" judul="Berat dan tensi" />
-        <div className="mt-4 grid gap-3 sm:grid-cols-3">
-          <Statistik label="Sebelum" nilai={formatBerat(data.bb_pra_kg)} />
-          <Statistik label="Sesudah" nilai={formatBerat(data.bb_pasca_kg)} />
-          <Statistik
-            label="Turun"
-            nilai={turun === null ? '—' : formatAngka(turun, 1)}
-            satuan="kg"
-            keterangan={
-              data.bb_kemarin_kg === null
-                ? 'Berat sesi kemarin tidak dicatat'
-                : `Sesi kemarin ${formatBerat(data.bb_kemarin_kg)}`
-            }
-          />
-        </div>
+      <div className="grid gap-3 sm:grid-cols-3">
+        <Statistik
+          label="Berat sebelum"
+          nilai={formatBerat(data.bb_pra_kg)}
+          nada="utama"
+          ikon="timbangan"
+        />
+        <Statistik
+          label="Berat sesudah"
+          nilai={formatBerat(data.bb_pasca_kg)}
+          nada="info"
+          ikon="timbangan"
+        />
+        <Statistik
+          label="Turun selama sesi"
+          nilai={turun === null ? '—' : formatAngka(turun, 1)}
+          satuan={turun === null ? undefined : 'kg'}
+          keterangan={
+            data.bb_kemarin_kg === null
+              ? 'Berat sesi kemarin tidak dicatat'
+              : `Sesi kemarin ${formatBerat(data.bb_kemarin_kg)}`
+          }
+          nada="amber"
+          ikon="tetes"
+        />
+      </div>
 
-        <dl className="mt-5 grid gap-4 border-t border-border/20 pt-4 sm:grid-cols-2">
-          <div>
-            <dt className="text-xs font-semibold uppercase tracking-[0.1em] text-muted">
-              Tensi sebelum
-            </dt>
-            <dd className="angka mt-1 text-xl font-bold">
+      <Kartu className="p-5" cetak>
+        <JudulBagian
+          label="Sebelum"
+          judul="Sebelum cuci darah"
+          ikon="timbangan"
+          keterangan="Data saat baru tiba di unit."
+        />
+
+        <dl className="mt-4 grid gap-4 sm:grid-cols-2">
+          <div className="rounded-kontrol border border-primary/15 bg-primary-soft/60 p-4">
+            <dt className="text-xs font-semibold text-primary-kuat/75">Berat badan</dt>
+            <dd className="angka mt-1 text-xl font-bold text-primary-kuat">
+              {formatBerat(data.bb_pra_kg)}
+            </dd>
+          </div>
+          <div className="rounded-kontrol border border-info/20 bg-info-soft/60 p-4">
+            <dt className="text-xs font-semibold text-info/80">Tensi</dt>
+            <dd className="angka mt-1 text-xl font-bold text-info">
               {formatTensi(data.tensi_pra_sistolik, data.tensi_pra_diastolik)}{' '}
               <span className="text-sm font-normal text-muted">mmHg</span>
             </dd>
           </div>
-          <div>
-            <dt className="text-xs font-semibold uppercase tracking-[0.1em] text-muted">
-              Tensi akhir sesi
-            </dt>
-            <dd className="angka mt-1 text-xl font-bold">
-              {formatTensi(data.tensi_pasca_sistolik, data.tensi_pasca_diastolik)}{' '}
-              <span className="text-sm font-normal text-muted">mmHg</span>
-            </dd>
-          </div>
         </dl>
+
+        <div className="mt-4">
+          <p className="text-xs font-bold uppercase tracking-[0.12em] text-muted">Keluhan</p>
+          <p className="mt-1 whitespace-pre-line text-sm">
+            {data.keluhan && data.keluhan.trim() !== '' ? data.keluhan : 'Tidak ada keluhan.'}
+          </p>
+        </div>
       </Kartu>
 
       <Kartu className="p-5" cetak>
         <JudulBagian
-          label="Selama sesi"
-          judul="Tensi berkala"
+          label="Selama"
+          judul="Selama cuci darah"
+          ikon="jantung"
           keterangan={
             data.tensi.length === 0
-              ? 'Tidak ada pemeriksaan berkala pada sesi ini.'
-              : `${data.tensi.length} pemeriksaan tercatat.`
+              ? 'Tidak ada pemeriksaan tensi berkala pada sesi ini.'
+              : `${data.tensi.length} pemeriksaan tensi tercatat.`
           }
         />
 
@@ -112,7 +138,7 @@ export default async function HalamanDetailSesi({ params }: { params: Promise<{ 
           <div className="mt-4 overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-border/30 text-left text-xs uppercase tracking-[0.1em] text-muted">
+                <tr className="border-b border-border text-left text-xs uppercase tracking-[0.1em] text-muted">
                   <th className="py-2 pr-3 font-semibold">Jam</th>
                   <th className="py-2 pr-3 font-semibold">Sistolik</th>
                   <th className="py-2 pr-3 font-semibold">Diastolik</th>
@@ -121,7 +147,7 @@ export default async function HalamanDetailSesi({ params }: { params: Promise<{ 
               </thead>
               <tbody>
                 {data.tensi.map((baca) => (
-                  <tr key={baca.id} className="border-b border-border/10 last:border-0">
+                  <tr key={baca.id} className="border-b border-border/40 last:border-0">
                     <td className="angka py-2.5 pr-3 font-semibold">{formatJam(baca.jam)}</td>
                     <td className="angka py-2.5 pr-3">{baca.sistolik}</td>
                     <td className="angka py-2.5 pr-3">{baca.diastolik}</td>
@@ -132,30 +158,47 @@ export default async function HalamanDetailSesi({ params }: { params: Promise<{ 
             </table>
           </div>
         ) : null}
+
+        <div className="mt-4 rounded-kontrol bg-accent-soft/70 p-4">
+          <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Kejadian</p>
+          <p className="mt-1 whitespace-pre-line text-sm text-text">
+            {data.catatan && data.catatan.trim() !== ''
+              ? data.catatan
+              : 'Tidak ada kejadian yang dicatat.'}
+          </p>
+        </div>
       </Kartu>
 
       <Kartu className="p-5" cetak>
-        <JudulBagian label="Catatan" judul="Keluhan dan kejadian" />
-        <div className="mt-4 space-y-4 text-sm">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.1em] text-muted">
-              Sebelum cuci darah
-            </p>
-            <p className="mt-1 whitespace-pre-line">
-              {data.keluhan && data.keluhan.trim() !== '' ? data.keluhan : 'Tidak ada keluhan.'}
-            </p>
+        <JudulBagian
+          label="Setelah"
+          judul="Setelah cuci darah"
+          ikon="periksa"
+          keterangan="Data sebelum pulang dari unit."
+        />
+
+        <dl className="mt-4 grid gap-4 sm:grid-cols-2">
+          <div className="rounded-kontrol border border-ok/20 bg-ok-soft/60 p-4">
+            <dt className="text-xs font-semibold text-ok/80">Berat badan</dt>
+            <dd className="angka mt-1 text-xl font-bold text-ok">
+              {formatBerat(data.bb_pasca_kg)}
+            </dd>
           </div>
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.1em] text-muted">
-              Selama cuci darah
-            </p>
-            <p className="mt-1 whitespace-pre-line">
-              {data.catatan && data.catatan.trim() !== ''
-                ? data.catatan
-                : 'Tidak ada kejadian yang dicatat.'}
-            </p>
+          <div className="rounded-kontrol border border-ok/20 bg-ok-soft/60 p-4">
+            <dt className="text-xs font-semibold text-ok/80">Tensi akhir sesi</dt>
+            <dd className="angka mt-1 text-xl font-bold text-ok">
+              {formatTensi(data.tensi_pasca_sistolik, data.tensi_pasca_diastolik)}{' '}
+              <span className="text-sm font-normal text-muted">mmHg</span>
+            </dd>
           </div>
-        </div>
+        </dl>
+
+        {turun !== null ? (
+          <p className="mt-4 rounded-kontrol bg-surface-2 px-4 py-3 text-sm text-muted">
+            Cairan berkurang <span className="font-bold text-text">{formatAngka(turun, 1)} kg</span>{' '}
+            selama sesi ini.
+          </p>
+        ) : null}
       </Kartu>
     </div>
   )

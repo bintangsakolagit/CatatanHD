@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { lk } from '@/lib/kelas'
+import { Ikon, type NamaIkon } from '@/components/ui/ikon'
 
 /**
  * Navigasi utama.
@@ -10,21 +11,21 @@ import { lk } from '@/lib/kelas'
  * dipakai di header untuk tablet dan desktop.
  */
 
-type Item = { href: string; label: string; cocok: string }
+type Item = { href: string; label: string; cocok: string; ikon: NamaIkon }
 
 const ITEM_DASAR: Item[] = [
-  { href: '/beranda', label: 'Beranda', cocok: '/beranda' },
-  { href: '/histori', label: 'Histori', cocok: '/histori' },
-  { href: '/lab', label: 'Lab', cocok: '/lab' },
-  { href: '/profil', label: 'Profil', cocok: '/profil' },
+  { href: '/beranda', label: 'Beranda', cocok: '/beranda', ikon: 'beranda' },
+  { href: '/histori', label: 'Histori', cocok: '/histori', ikon: 'histori' },
+  { href: '/lab', label: 'Lab', cocok: '/lab', ikon: 'lab' },
+  { href: '/profil', label: 'Profil', cocok: '/profil', ikon: 'profil' },
 ]
 
 const ITEM_BAWAH: Item[] = [
-  { href: '/beranda', label: 'Beranda', cocok: '/beranda' },
-  { href: '/histori', label: 'Histori', cocok: '/histori' },
-  { href: '/catatan/baru', label: 'Catat', cocok: '/catatan' },
-  { href: '/lab', label: 'Lab', cocok: '/lab' },
-  { href: '/profil', label: 'Profil', cocok: '/profil' },
+  { href: '/beranda', label: 'Beranda', cocok: '/beranda', ikon: 'beranda' },
+  { href: '/histori', label: 'Histori', cocok: '/histori', ikon: 'histori' },
+  { href: '/catatan/baru', label: 'Catat', cocok: '/catatan', ikon: 'tambah' },
+  { href: '/lab', label: 'Lab', cocok: '/lab', ikon: 'lab' },
+  { href: '/profil', label: 'Profil', cocok: '/profil', ikon: 'profil' },
 ]
 
 function aktif(pathname: string, cocok: string): boolean {
@@ -33,27 +34,34 @@ function aktif(pathname: string, cocok: string): boolean {
 
 export function Navigasi({ admin = false }: { admin?: boolean }) {
   const pathname = usePathname()
-  const item = admin
-    ? [...ITEM_DASAR, { href: '/pengguna', label: 'Pengguna', cocok: '/pengguna' }]
+  const item: Item[] = admin
+    ? [
+        ...ITEM_DASAR,
+        { href: '/pengguna', label: 'Pengguna', cocok: '/pengguna', ikon: 'pengguna' },
+      ]
     : ITEM_DASAR
 
   return (
     <nav className="hidden items-center gap-1 md:flex" aria-label="Navigasi utama">
-      {item.map((tautan) => (
-        <Link
-          key={tautan.href}
-          href={tautan.href}
-          aria-current={aktif(pathname, tautan.cocok) ? 'page' : undefined}
-          className={lk(
-            'rounded-kontrol px-3 py-2 text-sm font-semibold transition',
-            aktif(pathname, tautan.cocok)
-              ? 'bg-primary text-on-primary'
-              : 'text-muted hover:bg-black/[0.04] hover:text-text dark:hover:bg-white/[0.08]',
-          )}
-        >
-          {tautan.label}
-        </Link>
-      ))}
+      {item.map((tautan) => {
+        const menyala = aktif(pathname, tautan.cocok)
+        return (
+          <Link
+            key={tautan.href}
+            href={tautan.href}
+            aria-current={menyala ? 'page' : undefined}
+            className={lk(
+              'inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-sm font-semibold transition',
+              menyala
+                ? 'bg-primary-soft text-primary-kuat'
+                : 'text-muted hover:bg-surface-2 hover:text-text',
+            )}
+          >
+            <Ikon nama={tautan.ikon} className="h-4 w-4" />
+            {tautan.label}
+          </Link>
+        )
+      })}
     </nav>
   )
 }
@@ -63,10 +71,10 @@ export function NavigasiBawah() {
 
   return (
     <nav
-      className="tanpa-cetak fixed inset-x-0 bottom-0 z-30 border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] md:hidden"
+      className="tanpa-cetak fixed inset-x-0 bottom-0 z-30 border-t border-border/80 bg-surface/95 pb-[env(safe-area-inset-bottom)] shadow-[0_-8px_30px_-18px_rgb(16_34_28/0.45)] backdrop-blur md:hidden"
       aria-label="Navigasi bawah"
     >
-      <ul className="mx-auto flex max-w-lg items-stretch">
+      <ul className="mx-auto flex max-w-lg items-stretch px-1">
         {ITEM_BAWAH.map((tautan) => {
           const menyala = aktif(pathname, tautan.cocok)
           const utama = tautan.href === '/catatan/baru'
@@ -76,22 +84,23 @@ export function NavigasiBawah() {
                 href={tautan.href}
                 aria-current={menyala ? 'page' : undefined}
                 className={lk(
-                  'flex h-16 flex-col items-center justify-center gap-1 text-[11px] font-semibold transition',
-                  menyala ? 'text-text' : 'text-muted',
+                  'flex h-[4.5rem] flex-col items-center justify-center gap-1 rounded-2xl text-[11px] font-semibold transition',
+                  menyala ? 'text-primary-kuat' : 'text-muted',
                 )}
               >
                 <span
                   className={lk(
-                    'flex h-7 w-7 items-center justify-center rounded-full border text-sm leading-none',
+                    'flex items-center justify-center transition',
                     utama
-                      ? 'border-primary bg-primary text-on-primary'
-                      : menyala
-                        ? 'border-text'
-                        : 'border-transparent',
+                      ? 'gradien-utama -mt-3 h-12 w-12 rounded-full text-on-primary shadow-lembut'
+                      : lk(
+                          'h-8 w-12 rounded-full',
+                          menyala ? 'bg-primary-soft text-primary-kuat' : 'text-muted',
+                        ),
                   )}
                   aria-hidden="true"
                 >
-                  {utama ? '+' : <Titik aktif={menyala} />}
+                  <Ikon nama={tautan.ikon} className={utama ? 'h-6 w-6' : 'h-5 w-5'} />
                 </span>
                 {tautan.label}
               </Link>
@@ -100,15 +109,5 @@ export function NavigasiBawah() {
         })}
       </ul>
     </nav>
-  )
-}
-
-/** Penanda sederhana agar bilah bawah tidak bergantung pada pustaka ikon. */
-function Titik({ aktif: menyala }: { aktif: boolean }) {
-  return (
-    <span
-      className={lk('h-2 w-2 rounded-full', menyala ? 'bg-text' : 'bg-muted')}
-      aria-hidden="true"
-    />
   )
 }

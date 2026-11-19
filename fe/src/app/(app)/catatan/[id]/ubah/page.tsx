@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { wajibLogin } from '@catatanhd/be/auth/sesi'
 import { ambilSesi } from '@catatanhd/be/services/sesi'
 import { FormSesi } from '@/components/sesi/form-sesi'
+import { Ikon } from '@/components/ui/ikon'
 
 export const metadata: Metadata = { title: 'Ubah sesi' }
 
@@ -19,8 +20,9 @@ export default async function HalamanUbahSesi({ params }: { params: Promise<{ id
       <div className="space-y-2">
         <Link
           href={`/catatan/${data.id}`}
-          className="text-sm font-semibold text-muted underline underline-offset-4"
+          className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted transition hover:text-primary-kuat"
         >
+          <Ikon nama="kembali" className="h-4 w-4" />
           Kembali ke detail sesi
         </Link>
         <h1 className="text-2xl font-extrabold tracking-tight">Ubah catatan sesi</h1>

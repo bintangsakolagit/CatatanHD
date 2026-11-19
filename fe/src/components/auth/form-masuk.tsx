@@ -46,10 +46,16 @@ export function FormMasuk({ lanjut }: { lanjut?: string }) {
       </Tombol>
 
       <div className="flex items-center justify-between text-sm">
-        <Link href="/lupa-password" className="font-semibold underline underline-offset-4">
+        <Link
+          href="/lupa-password"
+          className="font-semibold text-primary-kuat underline underline-offset-4"
+        >
           Lupa password
         </Link>
-        <Link href="/daftar" className="font-semibold underline underline-offset-4">
+        <Link
+          href="/daftar"
+          className="font-semibold text-primary-kuat underline underline-offset-4"
+        >
           Buat akun
         </Link>
       </div>
