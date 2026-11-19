@@ -249,6 +249,11 @@ sesi dan mengarahkan pengguna yang belum masuk; pemeriksaan role tetap dilakukan
 - **Pendaftaran berhasil tetapi email tidak masuk** — periksa `RESEND_API_KEY`,
   `EMAIL_PENGIRIM`, dan folder spam. Di lokal, buka antarmuka email pada
   <http://localhost:54324>.
+- **Pendaftaran gagal dengan `Error sending confirmation email`** — domain pengirim belum
+  terverifikasi di Resend. Tambahkan domain di <https://resend.com/domains>, pasang record
+  DNS-nya, lalu samakan `EMAIL_PENGIRIM` dan pengirim SMTP Supabase. Selama belum
+  terverifikasi, konfirmasi email di Supabase sebaiknya dimatikan agar pasien tetap bisa
+  mendaftar.
 - **Tautan verifikasi mengarah ke localhost** — samakan `NEXT_PUBLIC_SITE_URL` dengan
   domain produksi dan perbarui Redirect URLs di Supabase.
 - **Admin tidak bisa membuka `/pengguna`** — pastikan profil akun tersebut memiliki

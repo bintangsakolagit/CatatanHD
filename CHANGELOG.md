@@ -3,6 +3,23 @@
 Format mengikuti [Keep a Changelog](https://keepachangelog.com/id/1.1.0/) dan
 [Semantic Versioning](https://semver.org/lang/id/).
 
+## [1.0.3] - 2026-11-18
+
+Pendaftaran dapat dipakai sebelum domain pengirim email terverifikasi.
+
+### Diubah
+
+- Bila Supabase mengembalikan sesi langsung (konfirmasi email dimatikan), pendaftar
+  diarahkan ke beranda tanpa diminta masuk dua kali.
+- Pesan "periksa email" hanya muncul ketika verifikasi email benar-benar diperlukan,
+  sehingga tidak menyesatkan saat konfirmasi email sedang dimatikan.
+
+### Catatan
+
+- Verifikasi email sebaiknya diaktifkan kembali setelah domain pengirim terverifikasi di
+  Resend. Tanpa domain terverifikasi, Resend menolak pengiriman dan pendaftaran berhenti
+  dengan pesan `Error sending confirmation email`.
+
 ## [1.0.2] - 2026-11-18
 
 Perbaikan pengalaman formulir saat pendaftaran atau masuk gagal.

@@ -87,6 +87,10 @@ export async function aksiDaftar(_status: StatusForm, data: FormData): Promise<S
     }
   }
 
+  // Saat konfirmasi email dimatikan, Supabase sudah membuat sesi. Pengguna
+  // langsung dibawa ke beranda supaya tidak diminta masuk dua kali.
+  if (!hasil.data.perluVerifikasi) redirect('/beranda')
+
   return {
     sukses: true,
     pesan: `Akun dibuat. Buka email ${muatan.email} untuk verifikasi, lalu masuk.`,

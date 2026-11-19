@@ -97,5 +97,7 @@ export async function daftarPasien(masukan: unknown): Promise<Hasil<{ perluVerif
     return gagal({ umum: 'Profil gagal disimpan. Coba lagi beberapa saat.' })
   }
 
-  return berhasil({ perluVerifikasi: true })
+  // Tanpa konfirmasi email, Supabase langsung membuat sesi. Nilai ini dipakai
+  // lapisan aksi untuk menentukan apakah pengguna masih perlu memeriksa email.
+  return berhasil({ perluVerifikasi: !hasilDaftar.session })
 }
